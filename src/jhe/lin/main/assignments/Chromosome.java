@@ -44,12 +44,14 @@ public class Chromosome implements jhe.lin.util.BaseChromosome<Float> {
 				// 取得該工作項目的標準開發時間
 				float devStandardDays = workTypes.get(work.get("type")).getDevStandardDays().get(work.get("level"));
 
-				// 實際開發時間 = 開發效率 * 標準開發時間
-				float realWorkTime = efficiency * devStandardDays;
+				// 實際開發時間 = 標準開發時間 * 開發效率
+				float realWorkTime = devStandardDays / efficiency;
 
 				Float preValue = resultMap.get(key);
 				resultMap.put(key, preValue == null ? realWorkTime : realWorkTime + preValue);
 			}
+			
+			//適應值 = Max(每個人實際工作時間)
 			if (resultMap.get(key) != null && resultMap.get(key) > result) {
 				result = resultMap.get(key);
 			}
