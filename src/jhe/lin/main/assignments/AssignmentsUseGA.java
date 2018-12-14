@@ -1,17 +1,10 @@
 package jhe.lin.main.assignments;
 
-import static jhe.lin.main.assignments.AssignmentsUseGA.workers;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
-import org.apache.commons.lang.ArrayUtils;
 
 public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 
@@ -39,7 +32,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 
 	@Override
 	public void initParameters() {
-		{// 初始化工作類型
+		{// 初始化工作類型					Easy Normal Hard VeryHard
 			WorkType typeA = new WorkType("1", "2", "4", "6");
 			WorkType typeB = new WorkType("0.5", "1", "2", "4");
 			WorkType typeC = new WorkType("1", "3", "5", "10");
@@ -48,7 +41,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 			workTypes.put(WorkType.TYPE.C, typeC);
 		}
 
-		{// 初始化人力資源
+		{// 初始化人力資源				A	  B     C
 			Worker 甲 = new Worker("0.8", "1", "0.8");
 			Worker 乙 = new Worker("1", "0.8", "0.8");
 			Worker 丙 = new Worker("0.8", "0.8", "1");
@@ -96,7 +89,6 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 
 	@Override
 	public boolean evalFitness() {
-		//System.err.println("====================evalFitness start==========================");
 		if (theBestChromosome != null) {
 			Chromosome tempCh = getBestOneOnThisGen();
 			if (new BigDecimal(theBestChromosome.getFitnessValue())
@@ -111,8 +103,6 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 			theBestChromosome = getBestOneOnThisGen();
 		}
 
-		
-		
 		if (BEST_ANSWER != null) {
 			BigDecimal nowBest = new BigDecimal(theBestChromosome.getFitnessValue());
 			// 已經得到最佳解就離開
@@ -158,7 +148,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 				childList.add(parent1List.get(index));
 			}
 
-			// 取parent2的後半段給child
+			// 以parent2的順序將其餘的值補給child
 			for (HashMap<String, Enum> map : parent2List) {
 				for (int index = point; index < parent1List.size(); index++) {
 					HashMap<String, Enum> parentMap = parent1List.get(index);
@@ -191,7 +181,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 			}
 			Collections.sort(spiltArray);
 
-			// 用交配出的child跟每個人分配到的工作量建出新的Chromosome
+			// 用交配出的childList跟每個人分配到的工作量建出新的Chromosome
 			int spiltIndex = 0;
 			int startIndex = 0;
 			int endIndex = 0;
@@ -220,6 +210,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 		for (Chromosome ch : chromosomes) {
 			double random = Math.random();
 			if (random < MUTATION_RATE) {
+				// 亂數取兩個人，將他們工作直接互換
 				HashMap<String, List> value = ch.getValue();
 				String key1 = null, key2 = null;
 				while (key1 == null || key2 == null || key1.equals(key2)) {

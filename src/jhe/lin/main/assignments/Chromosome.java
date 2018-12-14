@@ -127,9 +127,9 @@ public class Chromosome implements jhe.lin.util.BaseChromosome<String>, Comparab
 			return 1;
 		} else if (e.compareTo(WorkType.LEVEL.NORMAL) == 0) {
 			return 2;
-		} else if (e.compareTo(WorkType.LEVEL.COMPLEX) == 0) {
+		} else if (e.compareTo(WorkType.LEVEL.HARD) == 0) {
 			return 3;
-		} else if (e.compareTo(WorkType.LEVEL.VERY_COMPLEX) == 0) {
+		} else if (e.compareTo(WorkType.LEVEL.VERY_HARD) == 0) {
 			return 4;
 		}
 		return -1;
