@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static jhe.lin.main.assignments.AssignmentsUseGA.*;
+import static jhe.lin.main.assignments.AssignmentsUsingGA.*;
 
+@SuppressWarnings({ "unchecked","rawtypes" })
 public class Chromosome implements jhe.lin.util.BaseChromosome<String>, Comparable<Chromosome> {
 	private BigDecimal fitnessValue = BigDecimal.ZERO;
 	private HashMap<String, BigDecimal> WorkTimeMap;

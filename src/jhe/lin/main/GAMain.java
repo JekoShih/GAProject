@@ -1,14 +1,11 @@
 package jhe.lin.main;
 
-import jhe.lin.main.assignments.AssignmentsUseGA;
+import jhe.lin.main.assignments.AssignmentsUsingGA;
 
 public class GAMain {
-	public static final boolean ENABLE_LOGCAT = true;
-
 	public static void main(String... arg) {
-		AssignmentsUseGA ga = new AssignmentsUseGA();
+		AssignmentsUsingGA ga = new AssignmentsUsingGA();
 		ga.initParameters();
-		System.err.println("====================initPopulation start==========================");
 		ga.initPopulation();
 		while (!ga.evalFitness()) {
 			ga.selection();
@@ -18,5 +15,4 @@ public class GAMain {
 		}
 		ga.outputResult();
 	}
-
 }

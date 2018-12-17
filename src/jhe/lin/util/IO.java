@@ -3,7 +3,6 @@ package jhe.lin.util;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 
 import java.io.File;
@@ -11,8 +10,9 @@ import java.io.FileInputStream;
 
 public class IO {
 
-	public static float[][] readExcel_distance(int size) {
-		File excelFile = new File("distance.xls");
+	@SuppressWarnings("resource")
+	public static float[][] readExcel(int size, String fileName) {
+		File excelFile = new File(fileName);
 		float d[][] = new float[size][size];
 		try {
 			HSSFWorkbook wb = new HSSFWorkbook(new FileInputStream(excelFile));

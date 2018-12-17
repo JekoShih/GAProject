@@ -6,7 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class AssignmentsUseGA implements jhe.lin.util.GAflow {
+@SuppressWarnings("rawtypes")
+public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 
 	private final int CHROMOSOME_LIMIT;
 	private final int GENERATIONS;
@@ -21,7 +22,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 	private BigDecimal BEST_ANSWER;
 	private int generationCount = 1;
 
-	public AssignmentsUseGA() {
+	public AssignmentsUsingGA() {
 		CHROMOSOME_LIMIT = 10; // 總染色體數量
 		SETECTION_COUNT = 6; // 挑選幾組做交配，必須小於總染色體數量
 		GENERATIONS = 100000; // 要跑幾個世代
@@ -50,20 +51,20 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 			workers.put("丙", 丙);
 		}
 
-		{// 初始化工作數量
-			for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++){// 初始化工作數量
+			{
 				HashMap<String, Enum> work = new HashMap<String, Enum>();
 				work.put("type", WorkType.TYPE.A);
 				work.put("level", WorkType.LEVEL.EASY);
 				requirements.add(work);
 			}
-			for (int i = 0; i < 10; i++) {
+			{
 				HashMap<String, Enum> work = new HashMap<String, Enum>();
 				work.put("type", WorkType.TYPE.B);
 				work.put("level", WorkType.LEVEL.NORMAL);
 				requirements.add(work);
 			}
-			for (int i = 0; i < 10; i++) {
+			{
 				HashMap<String, Enum> work = new HashMap<String, Enum>();
 				work.put("type", WorkType.TYPE.C);
 				work.put("level", WorkType.LEVEL.EASY);
@@ -78,13 +79,14 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 			Chromosome chromosome = Chromosome.createByRandom();
 			chromosomes.add(chromosome);
 		}
-
+		
 		// 排序:從最好到最壞
 		Collections.sort(chromosomes);
 		for (Chromosome ch : chromosomes) {
 			System.err.print(ch.toString());
 			System.err.println();
 		}
+
 	}
 
 	@Override
@@ -96,8 +98,8 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 				theBestChromosome = tempCh;
 				System.err.print("==第");
 				System.err.print(generationCount);
-				System.err.println("世代==");
-				System.err.println("theBestChromosome="+theBestChromosome.getFitnessValue());
+				System.err.print("世代== ");
+				System.err.println("The Best Fitness Value="+theBestChromosome.getFitnessValue());
 			}
 		} else {
 			theBestChromosome = getBestOneOnThisGen();
@@ -133,6 +135,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void crossover() {
 		int i = 0;
@@ -205,6 +208,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void mutation() {
 		for (Chromosome ch : chromosomes) {
@@ -273,6 +277,7 @@ public class AssignmentsUseGA implements jhe.lin.util.GAflow {
 		return new Chromosome(bestChromosome.getValue());
 	}
 
+	@SuppressWarnings({ "unused", "unchecked" })
 	private void showWorks(ArrayList<HashMap> workList) {
 		StringBuilder sb = new StringBuilder();
 		for (HashMap<String, Enum> work : workList) {
