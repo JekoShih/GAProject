@@ -6,8 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import jhe.lin.main.GAMain;
+
 @SuppressWarnings("rawtypes")
-public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
+public class AssignmentsUsingGA implements jhe.lin.util.GAflow<Chromosome> {
 
 	private final int CHROMOSOME_LIMIT;
 	private final int GENERATIONS;
@@ -19,7 +21,7 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 	private ArrayList<Chromosome> chromosomes = new ArrayList<Chromosome>();
 	private ArrayList<Chromosome> selectedChromosomes = new ArrayList<Chromosome>();
 	private Chromosome theBestChromosome;
-	private BigDecimal BEST_ANSWER;
+	public static BigDecimal BEST_ANSWER;
 	private int generationCount = 1;
 
 	public AssignmentsUsingGA() {
@@ -29,11 +31,15 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 		MUTATION_RATE = 0.001; // 突變率
 		BEST_ANSWER = new BigDecimal("10"); // 已知最佳解
 		generationCount = 0; // 初始化世代
+		
+		workTypes.clear();
+		workers.clear();
+		requirements.clear();
 	}
 
 	@Override
 	public void initParameters() {
-		{// 初始化工作類型					Easy Normal Hard VeryHard
+		{// 初始化工作類型 Easy Normal Hard VeryHard
 			WorkType typeA = new WorkType("1", "2", "4", "6");
 			WorkType typeB = new WorkType("0.5", "1", "2", "4");
 			WorkType typeC = new WorkType("1", "3", "5", "10");
@@ -42,7 +48,7 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 			workTypes.put(WorkType.TYPE.C, typeC);
 		}
 
-		{// 初始化人力資源				A	  B     C
+		{// 初始化人力資源 A B C
 			Worker 甲 = new Worker("0.8", "1", "0.8");
 			Worker 乙 = new Worker("1", "0.8", "0.8");
 			Worker 丙 = new Worker("0.8", "0.8", "1");
@@ -51,7 +57,7 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 			workers.put("丙", 丙);
 		}
 
-		for (int i = 0; i < 10; i++){// 初始化工作數量
+		for (int i = 0; i < 10; i++) {// 初始化工作數量
 			{
 				HashMap<String, Enum> work = new HashMap<String, Enum>();
 				work.put("type", WorkType.TYPE.A);
@@ -79,14 +85,15 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 			Chromosome chromosome = Chromosome.createByRandom();
 			chromosomes.add(chromosome);
 		}
-		
+
 		// 排序:從最好到最壞
 		Collections.sort(chromosomes);
-		for (Chromosome ch : chromosomes) {
-			System.err.print(ch.toString());
-			System.err.println();
+		if (GAMain.SHOW_LOG) {
+			for (Chromosome ch : chromosomes) {
+				System.err.print(ch.toString());
+				System.err.println();
+			}
 		}
-
 	}
 
 	@Override
@@ -96,10 +103,12 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 			if (new BigDecimal(theBestChromosome.getFitnessValue())
 					.compareTo(new BigDecimal(tempCh.getFitnessValue())) > 0) {
 				theBestChromosome = tempCh;
-				System.err.print("==第");
-				System.err.print(generationCount);
-				System.err.print("世代== ");
-				System.err.println("The Best Fitness Value="+theBestChromosome.getFitnessValue());
+				if (GAMain.SHOW_LOG) {
+					System.err.print("==第");
+					System.err.print(generationCount);
+					System.err.print("世代== ");
+					System.err.println("The Best Fitness Value=" + theBestChromosome.getFitnessValue());
+				}
 			}
 		} else {
 			theBestChromosome = getBestOneOnThisGen();
@@ -236,7 +245,7 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 		}
 	}
 
-	public void sortAndPrepareNextGen(){
+	public void sortAndPrepareNextGen() {
 		// 排序:從最好到最壞
 		Collections.sort(chromosomes);
 
@@ -247,11 +256,10 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 		}
 		chromosomes = temp;
 	}
-	
+
 	@Override
-	public void outputResult() {
-		System.err.println("======================outputResult==========================");
-		System.err.println(theBestChromosome.toString());
+	public Chromosome outputResult() {
+		return theBestChromosome;
 	}
 
 	/**
@@ -287,4 +295,10 @@ public class AssignmentsUsingGA implements jhe.lin.util.GAflow {
 		}
 		System.err.println(sb.toString());
 	}
+	
+	public int getGenerationCount(){
+		return generationCount;
+	}
+	
+	//public Chromosome
 }
